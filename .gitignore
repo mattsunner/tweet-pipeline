@@ -1,3 +1,4 @@
 # Env 
-
+config.cfg
 venv/
+.vscode/
