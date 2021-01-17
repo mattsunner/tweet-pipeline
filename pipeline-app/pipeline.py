@@ -33,6 +33,41 @@ def twitter_connect(config_file):
 
     return twitter
 
+# Stream Listerner Class
+
+
+class CustomListener(tweepy.StreamListener):
+    def on_error(self, status_code):
+        if status_code == 420:
+            return False
+
+    def on_status(self, status):
+        print(status.text)
+        return True
+
+    def on_data(self, data):
+        """
+        Automatic detection of the kind of data collected from Twitter
+        This method reads in tweet data as JSON and extracts the data we want.
+        """
+        try:
+            # parse as json
+            raw_data = json.loads(data)
+
+            # extract the relevant data
+            if "text" in raw_data:
+                user = raw_data["user"]["screen_name"]
+                created_at = parser.parse(raw_data["created_at"])
+                tweet = raw_data["text"]
+                retweet_count = raw_data["retweet_count"]
+                id_str = raw_data["id_str"]
+
+            # insert data just collected into MySQL my_database
+            populate_table(user, created_at, tweet, retweet_count, id_str)
+            print(f"Tweet colleted at: {created_at}")
+
+        except Error as e:
+            print(e)
 
 # Connect to Database (MySQL)
 # TODO: Move 'localhost' results to a dotenv file for deployment to prod.
@@ -54,6 +89,7 @@ def connect_db(database):
             password=database.get("password"),
             db=database.get("db"),
         )
+        print(f'Connection to host successful')
         return dbconnect
     except mysql.Error as e:
         print(e)
