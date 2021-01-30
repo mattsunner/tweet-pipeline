@@ -25,7 +25,7 @@ DATABASE = {
     'db': DB
 }
 
-CONFIG_FILE = Path.cwd() / "config.cfg"
+CONFIG_FILE = Path.cwd() / "../config.cfg"
 
 # Connect to Twitter & Authenticate with Tweepy
 
