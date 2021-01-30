@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 HOST = os.getenv("HOST")
-USER = 'root'  # TODO: Troubleshoot 'root' env variable loading in as main user
+USER = os.getenv("USER")
 PASSWORD = os.getenv("PASSWORD")
 DB = os.getenv("DB")
 
